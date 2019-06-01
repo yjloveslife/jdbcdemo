@@ -21,10 +21,11 @@ public class notepad extends JFrame implements ActionListener{
 //	private GridLayout layout = new GridLayout(2,1,5,5);
 	private JMenuBar mb = new JMenuBar();
 	private JMenu m = new JMenu("文件");
-	private JMenuItem  minew = new JMenuItem("添加收支项");
 	private JMenuItem midetail = new JMenuItem("显示明细");
 	private JMenuItem miexit = new JMenuItem("退出");
 	private JMenu m2 = new JMenu("编辑");
+	private JMenuItem  m2new = new JMenuItem("添加收支项");
+	private JMenuItem  m2delete = new JMenuItem("删除项");
 	private JPanel p[] = new JPanel[3];
 	private JLabel L[] = new JLabel[2];
 	private JTextField tf0 = new JTextField(6); 
@@ -32,7 +33,7 @@ public class notepad extends JFrame implements ActionListener{
 	private connect con= null;
 	private String name  = null;
 	
-	String[] s = {"流动金额","类型"};
+	String[] s = {"类型","流动金额"};
 	private DefaultTableModel tm = new DefaultTableModel(null,s);
 	private JTable table = new JTable(tm);
 	private JScrollPane sc = new JScrollPane(table);
@@ -69,11 +70,12 @@ public class notepad extends JFrame implements ActionListener{
 //		table = new JTable(tm);
 //		sc = new JScrollPane(table);
 		sc.setPreferredSize(new Dimension(315,200));//调整滚动面板
+		
 		p[2].add(sc);
 		
 		p[0].add(p[2],BorderLayout.CENTER);
 //		System.out.println(sc.getSize());
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//自动适应列宽
+//		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//自动适应列宽
 		int colunms = table.getColumnCount();  
         for(int i = 0; i < colunms; i++)  
         {  
@@ -82,12 +84,15 @@ public class notepad extends JFrame implements ActionListener{
             tablecolumn.setPreferredWidth(100);  
         }  
 		
-		minew.addActionListener(this);
+		
 		midetail.addActionListener(this);
 		miexit.addActionListener(this);
-		m.add(minew);
+		m2new.addActionListener(this);
+		m2delete.addActionListener(this);
 		m.add(midetail);
 		m.add(miexit);
+		m2.add(m2new);
+		m2.add(m2delete);
 		mb.add(m);
 		mb.add(m2);
 		
@@ -100,39 +105,46 @@ public class notepad extends JFrame implements ActionListener{
 //		this.setResizable(false);
 		
 		//直接显示收支
-		
+		showdetail();
 	}
 	
 	public void actionPerformed(ActionEvent e)
 	{
-		if(e.getSource().equals(minew)) {
-			new addgui(name);
-		}else if(e.getSource().equals(midetail)) {
-			//清除表格内数据
-			//1
-//			for(int i=0; i<tm.getRowCount();i++)
-//				tm.removeRow(0);
-			//2
-						tm.setRowCount(0);
-						
-			vec.clear();//重置vec信息
-			con = new connect();//!
-			float a[] = new float[]{0,0};
-			con.show(a, name);
-			tf0.setText(String.valueOf(a[0])+"元");
-			tf1.setText(String.valueOf(a[1])+"元");
-			con.detail1(vec, name);
+		if(e.getSource().equals(m2new)) {
+			new addgui(name);//添加信息的面板
 			
-			for(int i=0;i<vec.size();i++) {
-//				System.out.println(arr.get(i).getMoney()+arr.get(i).getType());
-//				table.addColumn(new TableColumn());
-				tm.addRow(vec.get(i));
-//				vec.remove(0);
-//				vec.remove(1);
-			}
+		}else if(e.getSource().equals(m2delete)) {
+			new deletegui(name);
+		}else if(e.getSource().equals(midetail)) {
+			showdetail();
 		}else {
 			System.out.println("click了退出");
 			System.exit(0);
+		}
+	}
+	public  void showdetail() {
+//		清除表格内数据两种方法
+//		1
+//		for(int i=0; i<tm.getRowCount();i++)
+//			tm.removeRow(0);
+//		2
+					tm.setRowCount(0);
+//					
+		vec.clear();//重置vec信息
+		if(con == null)
+			con = new connect();//!
+		float a[] = new float[]{0,0};
+		con.show(a, name);
+		tf0.setText(String.valueOf(a[0])+"元");
+		tf1.setText(String.valueOf(a[1])+"元");
+		
+		con.detail1(vec, name);
+		for(int i=0;i<vec.size();i++) {
+//			System.out.println(arr.get(i).getMoney()+arr.get(i).getType());
+//			table.addColumn(new TableColumn());
+			tm.addRow(vec.get(i));
+//			vec.remove(0);
+//			vec.remove(1);
 		}
 	}
 }

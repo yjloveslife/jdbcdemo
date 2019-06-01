@@ -10,6 +10,8 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import com.mysql.cj.protocol.Resultset;
+
 public class connect {
 	Connection con = null;
 	String sql = null;
@@ -125,8 +127,46 @@ public class connect {
 			return false;
 		}
 	}
-	public void detail1(Vector<Vector> vec,String name) {
+	public boolean delete(String name,float a,String t) {
 		con = this.getConnection();
+		String type = t;
+		try {
+			sql = "delete from message where name=? and inandout=? and type=?";
+			preparedstatement = (PreparedStatement)con.prepareStatement(sql);			
+			preparedstatement.setString(1, name);
+			preparedstatement.setFloat(2, a);
+			preparedstatement.setString(3, type);
+			preparedstatement.execute();
+			JOptionPane.showMessageDialog(null, "³É¹¦");
+			return true;
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public boolean isin(String name,float a,String t) {
+		con = this.getConnection();
+		String type = t;
+		try {
+			sql = "select* from message where name=? and inandout=? and type=?";
+			preparedstatement = (PreparedStatement)con.prepareStatement(sql);			
+			preparedstatement.setString(1, name);
+			preparedstatement.setFloat(2, a);
+			preparedstatement.setString(3, type);
+			resultSet = preparedstatement.executeQuery();
+			if(resultSet.next()) {
+				return true;
+			}else {
+				return false;
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public void detail1(Vector<Vector> vec,String name) {
+		if(con == null)
+			con = this.getConnection();
 		Vector v;
 		try {
 			sql = "select * from message where name = ?";

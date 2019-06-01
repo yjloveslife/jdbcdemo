@@ -1,29 +1,24 @@
 package log;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
-public class addgui extends adgui implements ActionListener{
-	
-	public addgui(String name) {
+public class deletegui extends adgui implements ActionListener{
+	public deletegui(String name) {
 		super(name);
-		this.setTitle("增加项信息");
+		this.setTitle("删除项信息");
 		but[0].addActionListener(this);
 		but[1].addActionListener(this);
+		// TODO Auto-generated constructor stub
 	}
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==but[0]) {
 			if(tf.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "请填写信息");
 				return;
 			}
-			System.out.println(tf.getText());
 			String type = cb.getSelectedItem().toString();
 			float money = Float.valueOf(tf.getText());
 			connect con = new connect();
@@ -33,12 +28,21 @@ public class addgui extends adgui implements ActionListener{
 				else;
 			else  
 				if(money<0) money = -money;
-			boolean flag = con.add(name, money,type);
+			boolean flag =false;
+			if(con.isin(name, money,type)) {
+				flag = con.delete(name, money,type);
+			}else {
+				JOptionPane.showMessageDialog(null, "未找到该项");
+				return;
+			}
 			if(flag==true) {
 				this.setVisible(false);
+			}else {
+				JOptionPane.showMessageDialog(null, "删除失败");
 			}
 		}else if(e.getSource()==but[1]) {
 			this.setVisible(false);
 		}
+		
 	}
 }
