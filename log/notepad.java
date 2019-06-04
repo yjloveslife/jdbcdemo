@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.TimerTask;
+import java.util.Timer;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -63,9 +65,9 @@ public class notepad extends JFrame implements ActionListener{
 		p[2] = new JPanel();
 //		String[] s = {"流动金额","类型"};
 //		String[][] ss = {{"200","hello","12.2"},{"-200","hello2","1.5"}
-//							,{"200","hello","12.2"},{"200","hello","12.2"},{"-200","hello2","1.5"}
-//							,{"200","hello","12.2"},{"200","hello","12.2"},{"-200","hello2","1.5"}
-//							,{"200","hello","12.2"},{"200","hello","12.2"},{"200","hello","12.2"}};
+//					,{"200","hello","12.2"},{"200","hello","12.2"},{"-200","hello2","1.5"}
+//					,{"200","hello","12.2"},{"200","hello","12.2"},{"-200","hello2","1.5"}
+//					,{"200","hello","12.2"},{"200","hello","12.2"},{"200","hello","12.2"}};
 //		tm = new DefaultTableModel(ss,s);
 //		table = new JTable(tm);
 //		sc = new JScrollPane(table);
@@ -105,14 +107,15 @@ public class notepad extends JFrame implements ActionListener{
 //		this.setResizable(false);
 		
 		//直接显示收支
-		showdetail();
+//		showdetail();
+		Timer timer = new Timer();
+		timer.schedule(new task(), 100,5000);
 	}
 	
 	public void actionPerformed(ActionEvent e)
 	{
 		if(e.getSource().equals(m2new)) {
 			new addgui(name);//添加信息的面板
-			
 		}else if(e.getSource().equals(m2delete)) {
 			new deletegui(name);
 		}else if(e.getSource().equals(midetail)) {
@@ -122,22 +125,32 @@ public class notepad extends JFrame implements ActionListener{
 			System.exit(0);
 		}
 	}
+	class task extends TimerTask {
+		public void run() {
+			showdetail();
+		}
+	}
 	public  void showdetail() {
 //		清除表格内数据两种方法
 //		1
 //		for(int i=0; i<tm.getRowCount();i++)
 //			tm.removeRow(0);
 //		2
-					tm.setRowCount(0);
+//			tm.setRowCount(0);
 //					
-		vec.clear();//重置vec信息
+					vec.clear();//重置vec信息
 		if(con == null)
 			con = new connect();//!
 		float a[] = new float[]{0,0};
 		con.show(a, name);
+		if((String.valueOf(a[0])+"元").equals(tf0.getText())&&(String.valueOf(a[1])+"元").equals(tf1.getText()))
+		{
+//			System.out.println("is same");
+			return;
+		}
 		tf0.setText(String.valueOf(a[0])+"元");
 		tf1.setText(String.valueOf(a[1])+"元");
-		
+		tm.setRowCount(0);
 		con.detail1(vec, name);
 		for(int i=0;i<vec.size();i++) {
 //			System.out.println(arr.get(i).getMoney()+arr.get(i).getType());
