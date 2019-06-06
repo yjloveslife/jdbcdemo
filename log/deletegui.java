@@ -29,8 +29,13 @@ public class deletegui extends adgui implements ActionListener{
 			else  
 				if(money<0) money = -money;
 			boolean flag =false;
-			if(con.isin(name, money,type)) {
-				flag = con.delete(name, money,type);
+			String time = cbyear.getSelectedItem().toString()+"-"
+					+cbmonth.getSelectedItem().toString()+"-"
+					+cbday.getSelectedItem().toString()+" "
+					+cbhours.getSelectedItem().toString()+":"
+					+cbmins.getSelectedItem().toString()+":0";
+			if(con.isin(name, money,type,time)) {
+				flag = con.delete(name, money,type,time);
 			}else {
 				JOptionPane.showMessageDialog(null, "Î´ÕÒµ½¸ÃÏî");
 				return;

@@ -35,7 +35,7 @@ public class notepad extends JFrame implements ActionListener{
 	private connect con= null;
 	private String name  = null;
 	
-	String[] s = {"类型","流动金额"};
+	String[] s = {"类型","流动金额","消费时间"};
 	private DefaultTableModel tm = new DefaultTableModel(null,s);
 	private JTable table = new JTable(tm);
 	private JScrollPane sc = new JScrollPane(table);
@@ -77,15 +77,25 @@ public class notepad extends JFrame implements ActionListener{
 		
 		p[0].add(p[2],BorderLayout.CENTER);
 //		System.out.println(sc.getSize());
-//		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//自动适应列宽
-		int colunms = table.getColumnCount();  
-        for(int i = 0; i < colunms; i++)  
-        {  
-            tablecolumn = table.getColumnModel().getColumn(i);  
-            /*将每一列的默认宽度设置为100*/  
-            tablecolumn.setPreferredWidth(100);  
-        }  
 		
+//		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//自动适应列宽去除
+//		int colunms = table.getColumnCount();  
+//        for(int i = 0; i < colunms; i++)  
+//        {  
+//            tablecolumn = table.getColumnModel().getColumn(i);  
+//            /*将每一列的默认宽度设置为100*/  
+//            tablecolumn.setPreferredWidth(100);  
+//        } 
+		//前两列小些
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//自动适应列宽去除
+		int colunms = table.getColumnCount();  
+        for(int i = 0; i < colunms-1; i++) {  
+            tablecolumn = table.getColumnModel().getColumn(i);  
+            /*将每一列的默认宽度设置为100*/
+            tablecolumn.setPreferredWidth(85);
+        }  
+        tablecolumn = table.getColumnModel().getColumn(2);
+        tablecolumn.setPreferredWidth(127);  
 		
 		midetail.addActionListener(this);
 		miexit.addActionListener(this);

@@ -47,10 +47,13 @@ public class connect {
 		preparedstatement.setString(1, name1);
 		preparedstatement.setString(2, password1);
 		ResultSet resultSet=preparedstatement.executeQuery();
-		if(resultSet.next()) {
-			return true;
-		}else
-			return false;
+			if(resultSet.next()) {
+				con.close();
+				return true;
+			}else {
+				con.close();
+				return false;
+			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -63,11 +66,13 @@ public class connect {
 		preparedstatement = (PreparedStatement)con.prepareStatement(sql);
 		preparedstatement.setString(1, name1);
 		resultSet=preparedstatement.executeQuery();
-		
 		if(resultSet.next()) {
+			con.close();
 			return true;
-		}else
+		}else {
+			con.close();
 			return false;
+		}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -81,6 +86,7 @@ public class connect {
 		preparedstatement.setString(1, name1);
 		preparedstatement.setString(2, password1);
 		preparedstatement.execute();
+		con.close();
 		} catch (SQLException e) {
 	        e.printStackTrace();
 	    }
@@ -105,58 +111,67 @@ public class connect {
 			if(resultSet.next()) {
 				a[1] = resultSet.getFloat(1);
 			}
+			con.close();
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
-	public boolean add(String name,float a,String t) {
+	public boolean add(String name,float a,String t,String time) {
 		con = this.getConnection();
 		String type = t;
 		try {
-			sql = "insert into message values(?,?,?)";
+			sql = "insert into message values(?,?,?,?)";
 			preparedstatement = (PreparedStatement)con.prepareStatement(sql);			
 			preparedstatement.setString(1, name);
 			preparedstatement.setFloat(2, a);
 			preparedstatement.setString(3, type);
+			preparedstatement.setString(4, time);
 			preparedstatement.execute();
 			JOptionPane.showMessageDialog(null, "成功");
+			con.close();
 			return true;
 		}catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
-	public boolean delete(String name,float a,String t) {
+	public boolean delete(String name,float a,String t,String time) {
 		con = this.getConnection();
 		String type = t;
 		try {
-			sql = "delete from message where name=? and inandout=? and type=?";
+			sql = "delete from message where name=? and inandout=? and type=? and time1=?";
 			preparedstatement = (PreparedStatement)con.prepareStatement(sql);			
 			preparedstatement.setString(1, name);
 			preparedstatement.setFloat(2, a);
 			preparedstatement.setString(3, type);
+			preparedstatement.setString(4, time);
 			preparedstatement.execute();
 			JOptionPane.showMessageDialog(null, "成功");
+			con.close();
 			return true;
 		}catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
-	public boolean isin(String name,float a,String t) {
+	public boolean isin(String name,float a,String t,String time) {
 		con = this.getConnection();
 		String type = t;
 		try {
-			sql = "select* from message where name=? and inandout=? and type=?";
+			sql = "select* from message where name=? and inandout=? and type=? and time1=?";
 			preparedstatement = (PreparedStatement)con.prepareStatement(sql);			
 			preparedstatement.setString(1, name);
 			preparedstatement.setFloat(2, a);
 			preparedstatement.setString(3, type);
+			preparedstatement.setString(4, time);
 			resultSet = preparedstatement.executeQuery();
 			if(resultSet.next()) {
+				con.close();
 				return true;
 			}else {
+				con.close();
 				return false;
 			}
 		}catch (SQLException e) {
@@ -165,7 +180,6 @@ public class connect {
 		}
 	}
 	public void detail1(Vector<Vector> vec,String name) {
-		if(con == null)
 			con = this.getConnection();
 		Vector v;
 		try {
@@ -176,18 +190,20 @@ public class connect {
 			message m = null;
 //			arr = new ArrayList<message>();
 			while(resultSet.next()) {
-				m = new message();
-				m.setType(resultSet.getString(3));
-				m.setMoney(resultSet.getFloat(2));
+//				m = new message();
+//				m.setType(resultSet.getString(3));
+//				m.setMoney(resultSet.getFloat(2));
 				v = new Vector();
 //					System.out.println(resultSet.getString(3)+resultSet.getFloat(2));
 //				vec.add(m);
 				v.add(resultSet.getString(3));
 				v.add(resultSet.getFloat(2));
+				v.add(resultSet.getString(4));//直接获取String型，不然时间会没
 				vec.add(v);
 			}
 //			for(int i=0;i<arr.size();i++)
 //				System.out.println(arr.get(i).getClass()+arr.get(i).getType());
+			con.close();
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.*;
 
@@ -33,7 +34,14 @@ public class addgui extends adgui implements ActionListener{
 				else;
 			else  
 				if(money<0) money = -money;
-			boolean flag = con.add(name, money,type);
+			String time = cbyear.getSelectedItem().toString()+"-"
+				+cbmonth.getSelectedItem().toString()+"-"
+				+cbday.getSelectedItem().toString()+" "
+				+cbhours.getSelectedItem().toString()+":"
+				+cbmins.getSelectedItem().toString()+":0";
+//			Date d = new Date(year, month, date, hrs, min, sec);
+//			System.out.println(time);
+			boolean flag = con.add(name, money,type,time);
 			if(flag==true) {
 				this.setVisible(false);
 			}
