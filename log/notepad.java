@@ -24,14 +24,16 @@ public class notepad extends JFrame implements ActionListener{
 	private JMenuBar mb = new JMenuBar();
 	private JMenu m = new JMenu("文件");
 	private JMenuItem midetail = new JMenuItem("显示明细");
+	private JMenuItem mianalyze = new JMenuItem("分析数据");
 	private JMenuItem miexit = new JMenuItem("退出");
 	private JMenu m2 = new JMenu("编辑");
 	private JMenuItem  m2new = new JMenuItem("添加收支项");
 	private JMenuItem  m2delete = new JMenuItem("删除项");
 	private JPanel p[] = new JPanel[3];
-	private JLabel L[] = new JLabel[2];
+	private JLabel L[] = new JLabel[3];
 	private JTextField tf0 = new JTextField(6); 
 	private JTextField tf1 = new JTextField(6); 
+	private JTextField tf2 = new JTextField(6); 
 	private connect con= null;
 	private String name  = null;
 	
@@ -55,10 +57,13 @@ public class notepad extends JFrame implements ActionListener{
 		p[1] = new JPanel();
 		L[0] = new JLabel("总支出：");
 		L[1] = new JLabel("总收入：");
+		L[2] = new JLabel("结余：");
 		p[1].add(L[0]);
 		p[1].add(tf0);
 		p[1].add(L[1]);
 		p[1].add(tf1);
+		p[1].add(L[2]);
+		p[1].add(tf2);
 		p[0].add(p[1],BorderLayout.NORTH);
 		
 		//表格
@@ -98,10 +103,12 @@ public class notepad extends JFrame implements ActionListener{
         tablecolumn.setPreferredWidth(127);  
 		
 		midetail.addActionListener(this);
+		mianalyze.addActionListener(this);
 		miexit.addActionListener(this);
 		m2new.addActionListener(this);
 		m2delete.addActionListener(this);
 		m.add(midetail);
+		m.add(mianalyze);
 		m.add(miexit);
 		m2.add(m2new);
 		m2.add(m2delete);
@@ -130,9 +137,12 @@ public class notepad extends JFrame implements ActionListener{
 			new deletegui(name);
 		}else if(e.getSource().equals(midetail)) {
 			showdetail();
+		}else if(e.getSource().equals(mianalyze)) {
+			new analyze(name);
 		}else {
 			System.out.println("click了退出");
 			System.exit(0);
+			System.out.println(table.getSelectedRow());
 		}
 	}
 	class task extends TimerTask {
@@ -153,13 +163,16 @@ public class notepad extends JFrame implements ActionListener{
 			con = new connect();//!
 		float a[] = new float[]{0,0};
 		con.show(a, name);
-		if((String.valueOf(a[0])+"元").equals(tf0.getText())&&(String.valueOf(a[1])+"元").equals(tf1.getText()))
+		if((String.valueOf(a[0])+"元").equals(tf0.getText())
+				&&(String.valueOf(a[1])+"元").equals(tf1.getText())
+				&&(String.valueOf(a[1]-a[0])+"元").equals(tf2.getText()))
 		{
 //			System.out.println("is same");
 			return;
 		}
 		tf0.setText(String.valueOf(a[0])+"元");
 		tf1.setText(String.valueOf(a[1])+"元");
+		tf2.setText(String.valueOf(a[1]-a[0])+"元");
 		tm.setRowCount(0);
 		con.detail1(vec, name);
 		for(int i=0;i<vec.size();i++) {

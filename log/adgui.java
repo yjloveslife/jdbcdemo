@@ -62,7 +62,7 @@ public class adgui extends JFrame{
 			cbday.addItem(i);
 		}
 		cbhours = new JComboBox();
-		for(int i=0;i<=23;i++) {
+		for(int i=0;i<=12;i++) {
 			cbhours.addItem(i);
 		}
 		cbmins = new JComboBox();
@@ -110,7 +110,7 @@ public class adgui extends JFrame{
 //		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//主界面也会关闭
 	}
 	
-	public static void main (String[] args) {
-		new adgui("a");
-	}
+//	public static void main (String[] args) {
+//		new adgui("a");
+//	}
 }

@@ -1,6 +1,9 @@
 package log;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
@@ -16,15 +19,17 @@ import javax.swing.JPanel;
 public class analyze extends JFrame implements ActionListener{
 	private BorderLayout layout = new BorderLayout();
 	private JPanel[] p = new JPanel[2];
+	private JPanel pic = null;
 	private JComboBox cbyear = null;
 	private JComboBox cbmonth = null;
 	private JButton but[] = new JButton[2];
-	public analyze(){
+	private String name = null;
+	public analyze(String name){
+		this.name = name;
 		this.setLayout(layout);
 		
-		this.add(new JLabel("选择分析日期",JLabel.CENTER),BorderLayout.NORTH);
-		
 		p[0] = new JPanel();
+		p[0].add(new JLabel("选择分析月份",JLabel.CENTER));
 		cbyear = new JComboBox();
 		for(int i=2000;i<=Calendar.getInstance().get(Calendar.YEAR);i++) {//p179
 			cbyear.addItem(i);
@@ -37,7 +42,16 @@ public class analyze extends JFrame implements ActionListener{
 		cbmonth.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
 		p[0].add(cbyear);
 		p[0].add(cbmonth);
-		this.add(p[0],BorderLayout.CENTER);
+		this.add(p[0],BorderLayout.NORTH);
+		
+//		pic = new JPanel();
+//		mypanel mp[] = new mypanel[2];
+//		mp[0] = new mypanel();
+//		String year = cbyear.getSelectedItem().toString()
+//				, month = cbmonth.getSelectedItem().toString();
+//		pic.add(mp[0]);
+//		pic.setBackground(new Color(255,200,100));
+//		this.add(mp[0],BorderLayout.CENTER);
 		
 		p[1] = new JPanel();
 		but[0] = new JButton("confirm");
@@ -48,8 +62,8 @@ public class analyze extends JFrame implements ActionListener{
 		p[1].add(but[1]);
 		
 		this.add(p[1],BorderLayout.SOUTH);
-		this.setSize(200, 190);
-		this.setLocation(500,300);
+		this.setSize(300, 300);
+		this.setLocation(450,300);
 		this.setVisible(true);
 //		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -57,12 +71,15 @@ public class analyze extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==but[0]) {
-			
+			String year = cbyear.getSelectedItem().toString();
+			String month = cbmonth.getSelectedItem().toString();
+			if(year!=null&&month!=null&&!year.equals("")&&!month.equals("")) {
+//				System.out.println(name+" "+year+" "+month+" 1");
+				new circle(name,year,month);
+//				System.out.println(name+" "+year+" "+month+" 2");
+			}
 		}else {
 			System.exit(0);
 		}
-	}
-	public static void main(String[] args) {
-		new analyze();
 	}
 }

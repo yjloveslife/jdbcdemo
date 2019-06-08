@@ -118,6 +118,67 @@ public class connect {
 		
 	}
 	
+	public String rate(String type, String name,String forwards,String afterwards) {
+		con = this.getConnection();
+		String a = null;
+		try {
+			sql = "select sum(inandout) from message where type =? and name = ? and time1>? and time1<?";
+			preparedstatement = (PreparedStatement)con.prepareStatement(sql);
+			preparedstatement.setString(1, type);
+			preparedstatement.setString(2, name);
+			preparedstatement.setString(3, forwards);
+			preparedstatement.setString(4, afterwards);
+			resultSet = preparedstatement.executeQuery();
+			if(resultSet.next()) {
+				a = resultSet.getString(1);
+			}else {
+				return null;
+			}
+			con.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return a;
+		
+	}
+	public String getmonthly(String name,String forwards,String afterwards) {
+		con = this.getConnection();
+		String a = null;
+		try {
+			sql = "select sum(inandout) from message where name = ? and time1>? and time1<? and inandout<0";
+			preparedstatement = (PreparedStatement)con.prepareStatement(sql);
+			preparedstatement.setString(1, name);
+			preparedstatement.setString(2, forwards);
+			preparedstatement.setString(3, afterwards);
+			resultSet = preparedstatement.executeQuery();
+			if(resultSet.next()) {
+				a = resultSet.getString(1);
+			}
+			con.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return a;
+	}
+	public float getmonthly2(String name,String forwards,String afterwards) {
+		con = this.getConnection();
+		float a = 0;
+		try {
+			sql = "select sum(inandout) from message where name = ? and time1>? and time1<? and inandout>0";
+			preparedstatement = (PreparedStatement)con.prepareStatement(sql);
+			preparedstatement.setString(1, name);
+			preparedstatement.setString(2, forwards);
+			preparedstatement.setString(3, afterwards);
+			resultSet = preparedstatement.executeQuery();
+			if(resultSet.next()) {
+				a = resultSet.getFloat(1);
+			}
+			con.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return a;
+	}
 	public boolean add(String name,float a,String t,String time) {
 		con = this.getConnection();
 		String type = t;
