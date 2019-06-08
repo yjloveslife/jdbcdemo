@@ -22,7 +22,11 @@ public class datetest extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		System.out.println(getDaysOfMonth(new Date(2019,1,1)));
 		String nul = null;
-		System.out.println(nul.equals(null));
+//		System.out.println(nul.equals(null));
+		Calendar c = Calendar.getInstance();
+		c.setTime(new java.util.Date());
+		System.out.println(c.getMaximum(Calendar.HOUR_OF_DAY));
+		System.out.println(c.get(c.HOUR_OF_DAY));
 	}
 	public static void main(String[] args) {
 //		Calendar c = Calendar.getInstance();

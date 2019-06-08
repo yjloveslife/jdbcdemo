@@ -62,7 +62,7 @@ public class adgui extends JFrame{
 			cbday.addItem(i);
 		}
 		cbhours = new JComboBox();
-		for(int i=0;i<=12;i++) {
+		for(int i=0;i<=23;i++) {
 			cbhours.addItem(i);
 		}
 		cbmins = new JComboBox();
@@ -73,7 +73,7 @@ public class adgui extends JFrame{
 		cbyear.setSelectedIndex(Calendar.getInstance().get(Calendar.YEAR)-2000);
 		cbmonth.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
 		cbday.setSelectedIndex(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)-1);
-		cbhours.setSelectedIndex(Calendar.getInstance().get(Calendar.HOUR));
+		cbhours.setSelectedIndex(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
 		cbmins.setSelectedIndex(Calendar.getInstance().get(Calendar.MINUTE));
 //		jp[1].add(new JLabel());  //本来想控制格式
 		jp[1].add(new JLabel("日期(年月日)"));
